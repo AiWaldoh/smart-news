@@ -2,71 +2,51 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
+from tools.google_news_scraper import GoogleNewsScraper
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
+scraper = GoogleNewsScraper()
 
 
 @app.get("/")
 async def read_root(request: Request):
-    data = {
-        "columns": [
-            {
-                "title": "Politics",
-                "articles": [
-                    {
-                        "main_article": {
-                            "title": "Political Article Title",
-                            "source": "CNN",
-                            "description": "Lorem ipsum...",
-                            "link": "#",
-                            "image_link": "https://lh3.googleusercontent.com/proxy/Xo12q8E8BCGE6KBAU1Zhms_q9DrTw2AlVkkPvN1zw-tV7LSoYGIUoDJKSmbfo4iRJyuHJvtxxV0TWKPCrPr-toqWtlA_aIds9r48_Qjve478QjISRQKhitkDa-CbIwuZ4rFjezKehDCDderBn3_IEzj39OjGES_MoF_D03Y53BtiOV1dkHsOnTyVO8XyYTMT2v5cVR7C_4p8cgV8RT8vEdNn7f09oObXmLK7Xq1RSUQzLB1DzEzR_ip5FcY8TNIgoTvQrhz9nA=s0-w100-h100-dcGQSmi40L"
-                        },
-                        "additional_articles": [
-                            {
-                                "title": "Additional Article Title",
-                                "source": "Additional Source",
-                                "link": "#"
-                            }
-                        ],
-                        "related_links": [
-                            {
-                                "title": "Related from Fox News",
-                                "link": "#"
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "title": "Sports",
-                "articles": [
-                    {
-                        "main_article": {
-                            "title": "Sports Article Title",
-                            "source": "ESPN",
-                            "description": "Lorem ipsum...",
-                            "link": "#",
-                            "image_link": "https://lh3.googleusercontent.com/proxy/Xo12q8E8BCGE6KBAU1Zhms_q9DrTw2AlVkkPvN1zw-tV7LSoYGIUoDJKSmbfo4iRJyuHJvtxxV0TWKPCrPr-toqWtlA_aIds9r48_Qjve478QjISRQKhitkDa-CbIwuZ4rFjezKehDCDderBn3_IEzj39OjGES_MoF_D03Y53BtiOV1dkHsOnTyVO8XyYTMT2v5cVR7C_4p8cgV8RT8vEdNn7f09oObXmLK7Xq1RSUQzLB1DzEzR_ip5FcY8TNIgoTvQrhz9nA=s0-w100-h100-dcGQSmi40L"
-                        },
-                        "additional_articles": [
-                            {
-                                "title": "Additional Sports Article",
-                                "source": "BBC Sports",
-                                "link": "#"
-                            }
-                        ],
-                        "related_links": [
-                            {
-                                "title": "Related from NBC Sports",
-                                "link": "#"
-                            }
-                        ]
-                    }
-                ]
+    scraper_output = scraper.search("Politics", 10)
+    adapted_data = map_and_validate_scraper_data(scraper_output, "Politics")
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "data": adapted_data}
+    )
+
+
+@app.get("/api/getArticles")
+async def get_articles(topic: str):
+    scraper_output = scraper.search(topic, 10)
+    adapted_data = map_and_validate_scraper_data(scraper_output, topic)
+    return {"articles": adapted_data, "topic": topic}
+
+
+def map_and_validate_scraper_data(scraper_output, topic):
+    adapted_articles = []
+    for article in scraper_output:
+        try:
+            mapped_article = {
+                "title": article.get("title", "N/A"),
+                "source": article.get("source", "N/A"),
+                "description": article.get("description", "N/A"),
+                "link": article.get("link", "N/A"),
+                "image_link": article.get("image_link", "N/A"),
+                "date": article.get("date", "N/A"),
             }
-        ]
-    }
-    return templates.TemplateResponse("index.html", {"request": request, "data": data})
+
+            # Validate - throw an error or fill a default value if a key is missing
+            for key in ["title", "source", "description", "link", "image_link"]:
+                if not mapped_article[key]:
+                    raise ValueError(f"Missing value for {key}")
+
+            adapted_articles.append({"main_article": mapped_article})
+        except Exception as e:
+            print(f"Error adapting article: {e}")
+
+    return adapted_articles

@@ -5,42 +5,106 @@
     <meta charset="UTF-8">
     <title>Google News 2009 UI</title>
     <link rel="stylesheet" href="static/styles.css">
+    <script src="static/scripts.js"></script>
 </head>
+
 <body>
-    <div class="container">
-      {% for column in data.columns %}
-        <div class="column">
-          <div class="title-row">
-            <h2>{{ column.title }}</h2>
-          </div>
-          {% for article in column.articles %}
-            <div class="topic">
-              <div class="news-item">
-                <img src="{{ article.main_article.image_link }}" alt="Image">
-                <div class="content">
-                  <a href="{{ article.main_article.link }}" class="title">{{ article.main_article.title }}</a>
-                  <span class="source">{{ article.main_article.source }}</span>
-                  <p class="description">{{ article.main_article.description }}</p>
-                  <div class="additional-article">
-                    {% for additional in article.additional_articles %}
-                      <div class="aa-inner">
-                        <a href="{{ additional.link }}">{{ additional.title }}</a>
-                        <span class="source">{{ additional.source }}</span>
-                      </div>
-                    {% endfor %}
-                  </div>
-                  <div class="related-links">
-                    {% for related in article.related_links %}
-                      <a href="{{ related.link }}">{{ related.title }}</a>
-                    {% endfor %}
-                  </div>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      {% endfor %}
-      
+
+    <div class="topicsContainer" id="topicsContainer"></div>
+    <form id="addTopicForm">
+        <input type="text" id="newTopic" placeholder="New Topic">
+        <button type="submit">Add Topic</button>
+    </form>
+
+    <div class="container two-column-layout" id="mainContainer"></div>
     </div>
-  </body>
-  </html>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const topics = JSON.parse(localStorage.getItem('topics'));
+            const promises = topics.map((topic) => fetch(`/api/getArticles?topic=${topic}`));
+
+            Promise.all(promises)
+                .then((responses) => Promise.all(responses.map((res) => res.json())))
+                .then((allData) => {
+                    allData.forEach((data) => {
+                        console.log(data)
+                        const newColumn = createColumn(data);
+                        document.getElementById("mainContainer").appendChild(newColumn);
+                    });
+                });
+
+            function createColumn(data) {
+                const containerDiv = document.createElement('div');
+                containerDiv.className = 'container';
+
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column';
+
+                const titleRowDiv = document.createElement('div');
+                titleRowDiv.className = 'title-row';
+                const titleH2 = document.createElement('h2');
+                titleH2.innerText = data.topic;
+                titleRowDiv.appendChild(titleH2);
+                columnDiv.appendChild(titleRowDiv);
+
+                // Loop through each article
+                data.articles.forEach((article) => {
+                    const topicDiv = document.createElement('div');
+                    topicDiv.className = 'topic';
+
+                    const newsItemDiv = document.createElement('div');
+                    newsItemDiv.className = 'news-item';
+
+                    // Add image
+                    const img = document.createElement('img');
+                    img.src = article.main_article.image_link;
+                    img.alt = 'Image';
+                    newsItemDiv.appendChild(img);
+
+                    // Add content div
+                    const contentDiv = document.createElement('div');
+                    contentDiv.className = 'content';
+
+                    // Add title, source, and description
+                    const aTitle = document.createElement('a');
+                    aTitle.href = article.main_article.link;
+                    aTitle.className = 'title';
+                    aTitle.innerText = article.main_article.title;
+
+                    const spanSource = document.createElement('span');
+                    spanSource.className = 'source';
+                    spanSource.innerText = article.main_article.source;
+
+                    // Create new span for date
+                    const spanDate = document.createElement('span');
+
+                    // Make the date text bold
+                    spanDate.style.fontWeight = 'bold';
+
+                    // Set the inner text for the date
+                    spanDate.innerText = ' ' + article.main_article.date;
+
+                    // Append the date to the source span
+                    spanSource.appendChild(spanDate);
+
+
+                    const pDescription = document.createElement('p');
+                    pDescription.className = 'description';
+                    pDescription.innerText = article.main_article.description;
+
+                    contentDiv.appendChild(aTitle);
+                    contentDiv.appendChild(spanSource);
+                    contentDiv.appendChild(pDescription);
+                    newsItemDiv.appendChild(contentDiv);
+                    topicDiv.appendChild(newsItemDiv);
+                    columnDiv.appendChild(topicDiv);
+                });
+
+                containerDiv.appendChild(columnDiv);
+                return containerDiv;
+            }
+
+
+        });
+    </script>
