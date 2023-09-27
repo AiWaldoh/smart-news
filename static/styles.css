@@ -17,16 +17,14 @@ body {
 }
 
 .topic h2 {
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 16px;
 }
 
 .title-row h2 {
-  background-color: #f2f2f2;
   border-top: 1px solid #ccc;
-  padding: 8px 0;
+  padding: 2px 0;
   margin: 0 0 15px 0;
-  text-align: center;
 }
 
 .news-item {
@@ -104,4 +102,19 @@ body {
 .aa-inner .source {
   font-size: 14px;
   color: #777;
+}
+.bg-color-1 {
+  background-color: #E6E6FA; /* Lavender */
+}
+
+.bg-color-2 {
+  background-color: #FFB6C1; /* Light Pink */
+}
+
+.bg-color-3 {
+  background-color: #98FB98; /* Pale Green */
+}
+
+.bg-color-4 {
+  background-color: #FFD700; /* Gold */
 }

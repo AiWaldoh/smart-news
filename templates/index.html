@@ -33,7 +33,9 @@
                         document.getElementById("mainContainer").appendChild(newColumn);
                     });
                 });
-
+            const colorClasses = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4'];
+            // Initialize a counter outside the function
+            let colorIndex = 0;
             function createColumn(data) {
                 const containerDiv = document.createElement('div');
                 containerDiv.className = 'container';
@@ -43,8 +45,18 @@
 
                 const titleRowDiv = document.createElement('div');
                 titleRowDiv.className = 'title-row';
+
                 const titleH2 = document.createElement('h2');
                 titleH2.innerText = data.topic;
+
+                // Get the color class at the current colorIndex
+                const colorClass = colorClasses[colorIndex];
+                // Add the color class to the title-row h2 element
+                titleH2.classList.add(colorClass);
+
+                // Increment the colorIndex, and reset it if it's equal to the length of colorClasses
+                colorIndex = (colorIndex + 1) % colorClasses.length;
+
                 titleRowDiv.appendChild(titleH2);
                 columnDiv.appendChild(titleRowDiv);
 
