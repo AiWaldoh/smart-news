@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Google News 2009 UI</title>
+    <link rel="stylesheet" href="static/styles.css">
+</head>
+<body>
+    <div class="container">
+      {% for column in data.columns %}
+        <div class="column">
+          <div class="title-row">
+            <h2>{{ column.title }}</h2>
+          </div>
+          {% for article in column.articles %}
+            <div class="topic">
+              <div class="news-item">
+                <img src="{{ article.main_article.image_link }}" alt="Image">
+                <div class="content">
+                  <a href="{{ article.main_article.link }}" class="title">{{ article.main_article.title }}</a>
+                  <span class="source">{{ article.main_article.source }}</span>
+                  <p class="description">{{ article.main_article.description }}</p>
+                  <div class="additional-article">
+                    {% for additional in article.additional_articles %}
+                      <div class="aa-inner">
+                        <a href="{{ additional.link }}">{{ additional.title }}</a>
+                        <span class="source">{{ additional.source }}</span>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="related-links">
+                    {% for related in article.related_links %}
+                      <a href="{{ related.link }}">{{ related.title }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+      
+    </div>
+  </body>
+  </html>
