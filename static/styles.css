@@ -45,7 +45,7 @@ body {
   flex: 1;
 }
 
-.content a {
+.content > a {
   font-size: 16px;
   color: blue;
   text-decoration: none;
@@ -62,7 +62,7 @@ body {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 16px;
+  /* gap: 16px; */
 }
 
 
@@ -94,7 +94,7 @@ body {
 
 .aa-inner a {
   color: blue;
-  text-decoration: none;
+  /* text-decoration: none; */
   font-size: 14px;
   margin-right: 8px;
 }

@@ -33,6 +33,60 @@
                         document.getElementById("mainContainer").appendChild(newColumn);
                     });
                 });
+
+
+
+
+
+
+            function createAdditionalArticles(parentDiv, additionalArticles) {
+                const additionalDiv = document.createElement('div');
+                additionalDiv.className = 'additional-article';
+                additionalArticles.forEach((article) => {
+                    const aaInnerDiv = document.createElement('div');
+                    aaInnerDiv.className = 'aa-inner';
+
+                    const aTitle = document.createElement('a');
+                    aTitle.href = article.link;
+                    aTitle.className = 'title';
+                    aTitle.innerText = article.title;
+
+                    const spanSource = document.createElement('span');
+                    spanSource.className = 'source';
+                    spanSource.innerText = article.source;
+
+                    aaInnerDiv.appendChild(aTitle);
+                    aaInnerDiv.appendChild(spanSource);
+                    additionalDiv.appendChild(aaInnerDiv);
+                });
+
+                parentDiv.appendChild(additionalDiv);
+            }
+
+            function createRelatedLinks(parentDiv, relatedLinks) {
+                const relatedLinksDiv = document.createElement('div');
+                relatedLinksDiv.className = 'related-links';
+
+                relatedLinks.forEach((related, index) => {
+                    const aRelated = document.createElement('a');
+                    aRelated.href = related.link;
+                    aRelated.className = 'related-source'; // Assigning a class for styling
+                    aRelated.innerText = related.source; // Changed to display the source instead of the title
+
+                    // If it's not the last element, add a space after it
+                    if (index < relatedLinks.length - 1) {
+                        const spaceSpan = document.createElement('span');
+                        spaceSpan.innerHTML = '&nbsp;-&nbsp;'; // Adding a space
+                        relatedLinksDiv.appendChild(aRelated);
+                        relatedLinksDiv.appendChild(spaceSpan);
+                    } else {
+                        relatedLinksDiv.appendChild(aRelated);
+                    }
+                });
+
+                parentDiv.appendChild(relatedLinksDiv);
+            }
+
             const colorClasses = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4'];
             // Initialize a counter outside the function
             let colorIndex = 0;
@@ -90,12 +144,13 @@
 
                     // Create new span for date
                     const spanDate = document.createElement('span');
+                    spanDate.style.color = 'black';
 
                     // Make the date text bold
                     spanDate.style.fontWeight = 'bold';
 
                     // Set the inner text for the date
-                    spanDate.innerText = ' ' + article.main_article.date;
+                    spanDate.innerText = ' - ' + article.main_article.date;
 
                     // Append the date to the source span
                     spanSource.appendChild(spanDate);
@@ -110,8 +165,18 @@
                     contentDiv.appendChild(pDescription);
                     newsItemDiv.appendChild(contentDiv);
                     topicDiv.appendChild(newsItemDiv);
+                    if (article.additional_articles && article.additional_articles.length > 0) {
+                        createAdditionalArticles(contentDiv, article.additional_articles);
+                    }
+
+                    // Related Links
+                    if (article.related_links && article.related_links.length > 0) {
+                        createRelatedLinks(contentDiv, article.related_links);
+                    }
+
                     columnDiv.appendChild(topicDiv);
                 });
+
 
                 containerDiv.appendChild(columnDiv);
                 return containerDiv;
