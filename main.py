@@ -3,13 +3,18 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request
 from fastapi.templating import Jinja2Templates
 from tools.google_news_scraper import GoogleNewsScraper
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-scraper = GoogleNewsScraper()
 
+scraper = GoogleNewsScraper("https://www.google.com/search")
+
+@app.get("/service-worker.js")
+async def read_service_worker():
+    return FileResponse("root_static/service-worker.js", media_type="application/javascript")
 
 @app.get("/")
 async def read_root(request: Request):

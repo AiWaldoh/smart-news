@@ -1,26 +1,52 @@
 from bs4 import BeautifulSoup
 from tools.base_scraper import BaseScraper
 from lxml import html
-import requests
+import os
+import json
+import time
 
 class GoogleNewsScraper(BaseScraper):
-    def __init__(self):
-        self.base_url = "https://www.google.com/search"
+    def __init__(self, base_url):
+        self.base_url = base_url
+        self.cache_dir = 'cache'  # Directory to store cache files
+        self.cache_duration = 600  # Cache duration in seconds (10 minutes)
+        os.makedirs(self.cache_dir, exist_ok=True)  # Create cache directory if it doesn't exist
 
     def search(self, query, limit=10):
-        self.full_url = f"{self.base_url}?q={query.replace(' ', '+')}&tbs=sbd:1,nsd:1&tbm=nws&source=lnt&bih=1144&dpr=1"
-
-        html = self.execute_curl(self.full_url)
+        cache_key = f"{query}-{limit}"
+        cache_file_path = os.path.join(self.cache_dir, f"{cache_key}.json")
+        
+        # Check if the cache file exists
+        if os.path.exists(cache_file_path):
+            with open(cache_file_path, 'r') as f:
+                cache_data = json.load(f)
+            
+            # Check if the cache is still valid
+            if time.time() - cache_data['timestamp'] < self.cache_duration:
+                print("Returning cached articles")
+                return cache_data['articles']  # Return the cached articles if they are still valid
+        
+        # Construct the full URL for the search query
+        full_url = f"{self.base_url}?q={query.replace(' ', '+')}&tbs=sbd:1,nsd:1&tbm=nws&source=lnt&bih=1144&dpr=1"
+        
+        # Execute curl and fetch the HTML
+        html = self.execute_curl(full_url)
         if not html:
             return []
+        
+        # Parse the HTML and extract articles
         soup = BeautifulSoup(html, "html.parser")
         articles = []
         for article_div in soup.find_all("div", class_="Gx5Zad fP1Qef xpd EtOod pkphOe"):
             article_info = self.extract_article_info(article_div)
             if article_info:
                 articles.append(article_info)
+        
+        # Cache the fetched articles along with the current timestamp
+        with open(cache_file_path, 'w') as f:
+            json.dump({'timestamp': time.time(), 'articles': articles}, f)
+        
         return articles
-    
 
     def extract_article_info(self, article_div):
         print("----------------------")

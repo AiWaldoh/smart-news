@@ -5,7 +5,13 @@ __pycache__/
 
 # C extensions
 *.so
+
+# My ignores
 junk/
+cache/
+
+
+
 # Distribution / packaging
 .Python
 build/
