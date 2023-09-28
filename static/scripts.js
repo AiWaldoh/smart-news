@@ -28,21 +28,30 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
-// Render topics to the DOM
 function renderTopics(topics) {
   const container = document.getElementById("topicsContainer");
-  container.innerHTML = "";  // Clear existing topics
+  container.innerHTML = "";
 
   topics.forEach((topic, index) => {
     const topicDiv = document.createElement("div");
-    topicDiv.textContent = topic;
+    topicDiv.className = "topic-item"; 
 
-    // Add delete button
+    // Create div for text
+    const textDiv = document.createElement("div");
+    textDiv.className = "text";
+    textDiv.textContent = topic;
+    topicDiv.appendChild(textDiv);
+
     const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button"; 
     deleteButton.textContent = "Delete";
     deleteButton.addEventListener("click", () => deleteTopic(index));
-    topicDiv.appendChild(deleteButton);
+
+    // Create div for button
+    const buttonDiv = document.createElement("div");
+    buttonDiv.className = "button";
+    buttonDiv.appendChild(deleteButton);
+    topicDiv.appendChild(buttonDiv);
 
     container.appendChild(topicDiv);
   });
@@ -54,6 +63,7 @@ function addTopic(newTopic) {
   topics.push(newTopic);
   localStorage.setItem('topics', JSON.stringify(topics));
   renderTopics(topics);
+  location.reload();
 }
 
 // Delete a topic by index

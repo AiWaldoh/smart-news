@@ -10,7 +10,14 @@
 </head>
 
 <body>
-
+    <header>
+        <div class='top'></div>
+        <div class='texta'>
+            <h1>smart-search</h1>
+            
+        </div>
+    </header>
+    <div id="topicsTitle">Your News Topics</div>
     <div class="topicsContainer" id="topicsContainer"></div>
     <form id="addTopicForm">
         <input type="text" id="newTopic" placeholder="New Topic">
@@ -21,28 +28,39 @@
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+
+
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            const colorClasses = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4'];
+            let colorIndex = 0;
+
             const topics = JSON.parse(localStorage.getItem('topics'));
-            const promises = topics.map((topic) => {
+
+            for (const topic of topics) {
                 const loadingColumn = createLoadingColumn();
                 document.getElementById('mainContainer').appendChild(loadingColumn);
 
-                return fetch(`/api/getArticles?topic=${topic}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const actualColumn = createColumn(data);
-                        if (actualColumn instanceof Node) {
-                            document.getElementById('mainContainer').replaceChild(actualColumn, loadingColumn);
-                        } else {
-                            console.error('Error: createColumn did not return a valid Node');
-                            loadingColumn.remove(); // optionally remove the loading column
-                        }
-                    })
-                    .catch(error => {
-                        console.error('There was an error: ', error);
-                        loadingColumn.remove();
-                    });
-            });
+                try {
+                    const data = await getArticles(topic);
+                    const actualColumn = createColumn(data);
+                    if (actualColumn instanceof Node) {
+                        document.getElementById('mainContainer').replaceChild(actualColumn, loadingColumn);
+                    } else {
+                        console.error('Error: createColumn did not return a valid Node');
+                        loadingColumn.remove(); // optionally remove the loading column
+                    }
+                } catch (error) {
+                    console.error('There was an error: ', error);
+                    loadingColumn.remove();
+                }
+            }
+
+            async function getArticles(topic) {
+                const response = await fetch(`/api/getArticles?topic=${topic}`);
+                return response.json();
+            }
+
             // This function creates a temporary column with a loading animation
             function createLoadingColumn() {
                 const containerDiv = document.createElement('div');
@@ -59,6 +77,7 @@
                 containerDiv.appendChild(columnDiv);
                 return containerDiv;
             }
+
             function createAdditionalArticles(parentDiv, additionalArticles) {
                 const additionalDiv = document.createElement('div');
                 additionalDiv.className = 'additional-article';
@@ -90,13 +109,13 @@
                 relatedLinks.forEach((related, index) => {
                     const aRelated = document.createElement('a');
                     aRelated.href = related.link;
-                    aRelated.className = 'related-source'; // Assigning a class for styling
-                    aRelated.innerText = related.source; // Changed to display the source instead of the title
+                    aRelated.className = 'related-source';
+                    aRelated.innerText = related.source;
 
                     // If it's not the last element, add a space after it
                     if (index < relatedLinks.length - 1) {
                         const spaceSpan = document.createElement('span');
-                        spaceSpan.innerHTML = '&nbsp;-&nbsp;'; // Adding a space
+                        spaceSpan.innerHTML = '&nbsp;-&nbsp;';
                         relatedLinksDiv.appendChild(aRelated);
                         relatedLinksDiv.appendChild(spaceSpan);
                     } else {
@@ -107,103 +126,64 @@
                 parentDiv.appendChild(relatedLinksDiv);
             }
 
-            const colorClasses = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4'];
-            // Initialize a counter outside the function
-            let colorIndex = 0;
 
-            //CREATE COLUMN FUNCTION
+            function createElement(type, className, text) {
+                const element = document.createElement(type);
+                element.className = className;
+                if (text) element.innerText = text;
+                return element;
+            }
+
             function createColumn(data) {
-
                 const mainContainer = document.getElementById('mainContainer');
                 if (!mainContainer) return;
 
+                const containerDiv = createElement('div', 'container');
+                const columnDiv = createElement('div', 'column');
+                const titleRowDiv = createElement('div', 'title-row');
 
-                const containerDiv = document.createElement('div');
-                containerDiv.className = 'container';
-
-                const columnDiv = document.createElement('div');
-                columnDiv.className = 'column';
-
-                const titleRowDiv = document.createElement('div');
-                titleRowDiv.className = 'title-row';
-
-                const titleH2 = document.createElement('h2');
-                titleH2.innerText = data.topic;
-
-                // Get the color class at the current colorIndex
-                const colorClass = colorClasses[colorIndex];
-                // Add the color class to the title-row h2 element
-                titleH2.classList.add(colorClass);
-
-                // Increment the colorIndex, and reset it if it's equal to the length of colorClasses
+                const titleH2 = createElement('h2', '', data.topic);
+                titleH2.classList.add(colorClasses[colorIndex]);
                 colorIndex = (colorIndex + 1) % colorClasses.length;
 
                 titleRowDiv.appendChild(titleH2);
                 columnDiv.appendChild(titleRowDiv);
 
-                // Loop through each article
                 data.articles.forEach((article) => {
-                    const topicDiv = document.createElement('div');
-                    topicDiv.className = 'topic';
+                    const { image_link, link, title, source, date, description } = article.main_article;
 
-                    const newsItemDiv = document.createElement('div');
-                    newsItemDiv.className = 'news-item';
-
-                    // Add image
-                    const img = document.createElement('img');
-                    img.src = article.main_article.image_link;
+                    const topicDiv = createElement('div', 'topic');
+                    const newsItemDiv = createElement('div', 'news-item');
+                    const img = createElement('img');
+                    img.src = image_link;
                     img.alt = 'Image';
                     newsItemDiv.appendChild(img);
 
-                    // Add content div
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = 'content';
+                    const contentDiv = createElement('div', 'content');
+                    const aTitle = createElement('a', 'title', title);
+                    aTitle.href = link;
 
-                    // Add title, source, and description
-                    const aTitle = document.createElement('a');
-                    aTitle.href = article.main_article.link;
-                    aTitle.className = 'title';
-                    aTitle.innerText = article.main_article.title;
-
-                    const spanSource = document.createElement('span');
-                    spanSource.className = 'source';
-                    spanSource.innerText = article.main_article.source;
-
-                    // Create new span for date
-                    const spanDate = document.createElement('span');
+                    const spanSource = createElement('span', 'source', source);
+                    const spanDate = createElement('span', '', ` - ${date}`);
                     spanDate.style.color = 'black';
-
-                    // Make the date text bold
                     spanDate.style.fontWeight = 'bold';
-
-                    // Set the inner text for the date
-                    spanDate.innerText = ' - ' + article.main_article.date;
-
-                    // Append the date to the source span
                     spanSource.appendChild(spanDate);
 
+                    const pDescription = createElement('p', 'description', description);
 
-                    const pDescription = document.createElement('p');
-                    pDescription.className = 'description';
-                    pDescription.innerText = article.main_article.description;
-
-                    contentDiv.appendChild(aTitle);
-                    contentDiv.appendChild(spanSource);
-                    contentDiv.appendChild(pDescription);
+                    contentDiv.append(aTitle, spanSource, pDescription);
                     newsItemDiv.appendChild(contentDiv);
                     topicDiv.appendChild(newsItemDiv);
+                    columnDiv.appendChild(topicDiv);
+
                     if (article.additional_articles && article.additional_articles.length > 0) {
                         createAdditionalArticles(contentDiv, article.additional_articles);
                     }
 
-                    // Related Links
                     if (article.related_links && article.related_links.length > 0) {
                         createRelatedLinks(contentDiv, article.related_links);
                     }
-
-                    columnDiv.appendChild(topicDiv);
                 });
-
 
                 containerDiv.appendChild(columnDiv);
                 mainContainer.appendChild(containerDiv);

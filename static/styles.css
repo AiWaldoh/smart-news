@@ -138,6 +138,7 @@ body {
   100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+
 @media (max-width: 768px) {
   
   #mainContainer>.container {
@@ -168,3 +169,142 @@ body {
   }
   
 }
+
+/* Style the container */
+#topicsContainer {
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+#topicsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /
+}
+@media (max-width: 600px) {
+  /* For mobile screens */
+  #topicsContainer {
+    grid-template-columns: 1fr; /* Single column for small screens */
+  }
+}
+/* Style each topic item */
+.topic-item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 400px;
+  width:auto;
+
+  flex: 1 1 calc(33.333% - 20px);
+  margin: 10px;
+  box-sizing: border-box;
+
+}
+/* Adjust the width of the items for smaller screens */
+@media (max-width: 767px) {
+  .topic-item {
+    flex: 1 1 calc(50% - 20px); /* On medium screens, make the items take up half of the container’s width */
+  }
+}
+
+@media (max-width: 480px) {
+  .topic-item {
+    flex: 1 1 calc(100% - 20px); /* On small screens, make the items take up the full width of the container */
+  }
+}
+
+/* Style the delete button */
+.delete-button {
+  cursor: pointer;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  width: auto; /* To override the full width */
+  padding: 5px 20px; /* You can adjust padding to your preference */
+
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+/* Style the Add Topic Form */
+#addTopicForm {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+#newTopic {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-left: 10px
+}
+
+/* Style the Add Topic Button */
+#addTopicForm button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+#addTopicForm button:hover {
+  background-color: #218838;
+}
+
+.text, .button {
+  padding: 5px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap');
+
+
+.top {
+	position: relative;
+	height: 10px;
+	background: linear-gradient(141deg, cyan 0%, rebeccapurple 40%, deeppink 90%);
+}
+
+h1 {
+  font-family: 'Oswald', sans-serif;
+  color: rgb(7, 7, 7);
+  font-size: 2.5vw;
+  font-weight: 300;
+	text-transform: uppercase;
+}
+
+.texta {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+}
+
+#topicsTitle {
+  margin-top: 10px;
+  margin-left: 20px;
+  font-size: 1.2em;
+  background-color: #f8f9fa;
+}
+
+/* header {
+  text-align: center;
+  color: white;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2); 
+} */
