@@ -22,23 +22,42 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const topics = JSON.parse(localStorage.getItem('topics'));
-            const promises = topics.map((topic) => fetch(`/api/getArticles?topic=${topic}`));
+            const promises = topics.map((topic) => {
+                const loadingColumn = createLoadingColumn();
+                document.getElementById('mainContainer').appendChild(loadingColumn);
 
-            Promise.all(promises)
-                .then((responses) => Promise.all(responses.map((res) => res.json())))
-                .then((allData) => {
-                    allData.forEach((data) => {
-                        console.log(data)
-                        const newColumn = createColumn(data);
-                        document.getElementById("mainContainer").appendChild(newColumn);
+                return fetch(`/api/getArticles?topic=${topic}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const actualColumn = createColumn(data);
+                        if (actualColumn instanceof Node) {
+                            document.getElementById('mainContainer').replaceChild(actualColumn, loadingColumn);
+                        } else {
+                            console.error('Error: createColumn did not return a valid Node');
+                            loadingColumn.remove(); // optionally remove the loading column
+                        }
+                    })
+                    .catch(error => {
+                        console.error('There was an error: ', error);
+                        loadingColumn.remove();
                     });
-                });
+            });
+            // This function creates a temporary column with a loading animation
+            function createLoadingColumn() {
+                const containerDiv = document.createElement('div');
+                containerDiv.className = 'container';
 
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'column';
 
+                // Add your preferred loading animation here
+                const loaderDiv = document.createElement('div');
+                loaderDiv.className = 'loader';
+                columnDiv.appendChild(loaderDiv);
 
-
-
-
+                containerDiv.appendChild(columnDiv);
+                return containerDiv;
+            }
             function createAdditionalArticles(parentDiv, additionalArticles) {
                 const additionalDiv = document.createElement('div');
                 additionalDiv.className = 'additional-article';
@@ -90,7 +109,14 @@
             const colorClasses = ['bg-color-1', 'bg-color-2', 'bg-color-3', 'bg-color-4'];
             // Initialize a counter outside the function
             let colorIndex = 0;
+
+            //CREATE COLUMN FUNCTION
             function createColumn(data) {
+
+                const mainContainer = document.getElementById('mainContainer');
+                if (!mainContainer) return;
+
+
                 const containerDiv = document.createElement('div');
                 containerDiv.className = 'container';
 
@@ -179,6 +205,7 @@
 
 
                 containerDiv.appendChild(columnDiv);
+                mainContainer.appendChild(containerDiv);
                 return containerDiv;
             }
 

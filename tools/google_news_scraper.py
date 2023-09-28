@@ -4,6 +4,8 @@ from lxml import html
 import os
 import json
 import time
+import re
+import urllib.parse
 
 class GoogleNewsScraper(BaseScraper):
     def __init__(self, base_url):
@@ -68,7 +70,10 @@ class GoogleNewsScraper(BaseScraper):
 
         # Simplified XPath to extract the complete URLs
         link = tree.xpath('//div[contains(@class, "Gx5Zad")]/a/@href')
-
+        if link:
+            match = re.search(r'/url\?q=([^&]*)', link[0])  # assuming link is a list with the URL as its first element
+            if match:
+                link = urllib.parse.unquote(match.group(1))
         # Extract other elements
         description = tree.xpath('//div[contains(@class, "Gx5Zad")]//div[@class="BNeawe s3v9rd AP7Wnd"]/div/div/text()')[0]
         date_text = tree.xpath('//div[contains(@class, "Gx5Zad")]//span[@class="r0bn4c rQMQod"]/text()')[0]
