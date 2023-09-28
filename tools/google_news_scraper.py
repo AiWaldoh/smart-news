@@ -78,7 +78,13 @@ class GoogleNewsScraper(BaseScraper):
         description = tree.xpath('//div[contains(@class, "Gx5Zad")]//div[@class="BNeawe s3v9rd AP7Wnd"]/div/div/text()')[0]
         date_text = tree.xpath('//div[contains(@class, "Gx5Zad")]//span[@class="r0bn4c rQMQod"]/text()')[0]
         source_text = tree.xpath('//div[contains(@class, "Gx5Zad")]//div[@class="BNeawe UPmit AP7Wnd lRVwie"]/text()')[0]
-        image_link = tree.xpath('//div[contains(@class, "Gx5Zad")]//img/@src')[0]
+        try:
+        
+            image_link = tree.xpath('//div[contains(@class, "Gx5Zad")]//img/@src')[0]
+        
+        except:
+            image_link = None
+        
         title = tree.xpath('//div[contains(@class, "Gx5Zad")]//div[@class="BNeawe vvjwJb AP7Wnd UwRFLe"]/text()')[0]
 
 
