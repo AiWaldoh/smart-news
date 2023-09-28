@@ -14,7 +14,7 @@ load_dotenv()
 
 app = FastAPI()
 
-cache_dir = 'cache'  # specify the path to your cache directory
+cache_dir = '/tmp/cache'  # specify the path to your cache directory
 cache_duration = 60 * 60  # specify the duration for which the cache is valid, in seconds
 
 templates = Jinja2Templates(directory="templates")

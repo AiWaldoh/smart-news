@@ -10,7 +10,7 @@ import urllib.parse
 class GoogleNewsScraper(BaseScraper):
     def __init__(self, base_url):
         self.base_url = base_url
-        self.cache_dir = 'cache'  # Directory to store cache files
+        self.cache_dir = '/tmp/cache'  # Directory to store cache files
         self.cache_duration = 600  # Cache duration in seconds (10 minutes)
         os.makedirs(self.cache_dir, exist_ok=True)  # Create cache directory if it doesn't exist
     
