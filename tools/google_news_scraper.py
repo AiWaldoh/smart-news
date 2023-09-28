@@ -14,15 +14,15 @@ class GoogleNewsScraper(BaseScraper):
         self.cache_duration = 600  # Cache duration in seconds (10 minutes)
         os.makedirs(self.cache_dir, exist_ok=True)  # Create cache directory if it doesn't exist
     
-    def search_many(self, query, pages=5):
+    async def search_many(self, query, pages=5):
         all_articles = []
         for i in range(pages):
             start = i * 10  # Each page has 10 results, so start is incremented by 10 for each page
-            articles = self.search(query, start=start)
+            articles = await self.search(query, start=start)
             all_articles.extend(articles)
         return all_articles
     
-    def search(self, query, limit=1, start=0):
+    async def search(self, query, limit=1, start=0):
         # print(start)
         cache_key = f"{query}-{start}"
         cache_file_path = os.path.join(self.cache_dir, f"{cache_key}.json")
@@ -42,7 +42,7 @@ class GoogleNewsScraper(BaseScraper):
         full_url = f"{self.base_url}?q={query.replace(' ', '+')}&start={start}&tbs=sbd:1,nsd:1&tbm=nws&source=lnt&bih=1144&dpr=1"
         # print(full_url)
         # Execute curl and fetch the HTML
-        html = self.execute_curl(full_url)
+        html = await self.execute_curl(full_url)
         if not html:
             return []
         

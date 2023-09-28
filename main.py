@@ -29,7 +29,7 @@ async def read_service_worker():
 
 @app.get("/")
 async def read_root(request: Request):
-    scraper_output = scraper.search("Politics", 10)
+    scraper_output = await scraper.search("Politics", 10)
     adapted_data = map_and_validate_scraper_data(scraper_output, "Politics")
     
     return templates.TemplateResponse(
@@ -55,7 +55,7 @@ async def get_articles(topic: str):
             return cache_data['articles']
         
 
-    scraper_output = scraper.search_many(topic, pages=4)
+    scraper_output = await scraper.search_many(topic, pages=4)
     
     adapted_data = map_and_validate_scraper_data(scraper_output, topic)
 
