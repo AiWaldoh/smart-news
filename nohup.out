@@ -1,0 +1,641 @@
+INFO:     Started server process [102242]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:45476 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45480 - "GET /scripts.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45476 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45476 - "GET /service-worker.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45476 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+querying gpt
+{similar_articles: [
+    {theme: "World Happiness Ranking", "similar_articles": [1]},
+    {theme: "Moscow concert attack", "similar_articles": [2, 4, 12, 13, 40]},
+    {theme: "World Seniors Champion of Champions Darts", "similar_articles": [3]},
+    {theme: "Figure Skating", "similar_articles": [5, 6, 16, 24, 26]},
+    {theme: "Air pollution", "similar_articles": [7, 34]},
+    {theme: "News Broadcast", "similar_articles": [8]},
+    {theme: "Support for Catherine's cancer announcement", "similar_articles": [9, 28]},
+    {theme: "World Cup bobsleigh", "similar_articles": [10]},
+    {theme: "Chip shortage", "similar_articles": [11]},
+    {theme: "Para-cycling Track World Championships", "similar_articles": [15]},
+    {theme: "Māori and Pacific Island school cultural festival", "similar_articles": [16]},
+    {theme: "Ice dance at worlds", "similar_articles": [17]},
+    {theme: "Kate Middleton cancer diagnosis", "similar_articles": [18, 35]},
+    {theme: "Bitcoin volatility", "similar_articles": [22]},
+    {theme: "Closure of Cinema World", "similar_articles": [23]},
+    {theme: "Martin Scorsese lawsuit settlement", "similar_articles": [27]},
+    {theme: "Movie: Do Not Expect Too Much From the End of the World", "similar_articles": [29, 32]},
+    {theme: "Solar eclipse viewing at One World Observatory", "similar_articles": [33]},
+    {theme: "Air pollution in Asia", "similar_articles": [34]},
+    {theme: "North Korea cancels World Cup qualifier", "similar_articles": [38]},
+    {theme: "Telemark skiing at World Cup finals", "similar_articles": [39]}
+]}
+INFO:     127.0.0.1:45480 - "GET /api/getArticles?topic=World HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/uvicorn/protocols/http/h11_impl.py", line 408, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/routing.py", line 273, in app
+    raw_response = await run_endpoint_function(
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/routing.py", line 190, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/waldoh/Dev/python/smart-news/main.py", line 79, in get_articles
+    grouped_articles_json = json.loads(grouped_articles_json)  # Convert JSON string to a dictionary
+  File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.10/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+querying gpt
+{
+  "similar_articles": [
+    {
+      "theme": "Sports",
+      "similar_articles": [1, 2, 5, 6, 16, 17, 20, 32]
+    },
+    {
+      "theme": "Politics",
+      "similar_articles": [3, 11, 12, 13, 14, 23, 24, 26, 28, 39, 40]
+    },
+    {
+      "theme": "Business",
+      "similar_articles": [7, 8, 29]
+    },
+    {
+      "theme": "Health",
+      "similar_articles": [10, 25, 31, 36]
+    },
+    {
+      "theme": "Crime",
+      "similar_articles": [12, 28, 35, 37, 38]
+    },
+    {
+      "theme": "Technology",
+      "similar_articles": [8, 22]
+    },
+    {
+      "theme": "Environment",
+      "similar_articles": [23, 25]
+    },
+    {
+      "theme": "Entertainment",
+      "similar_articles": [34]
+    }
+  ]
+}
+INFO:     127.0.0.1:38576 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41942 - "GET / HTTP/1.1" 200 OK
+Returning cached articles
+Returning cached articles
+Returning cached articles
+Returning cached articles
+querying gpt
+{similar_articles: [
+    {theme: "World Happiness Ranking", "similar_articles": [1]},
+    {theme: "Moscow concert attack", "similar_articles": [2, 4, 12, 13, 40]},
+    {theme: "World Seniors Champion of Champions Darts", "similar_articles": [3]},
+    {theme: "Figure Skating", "similar_articles": [5, 6, 16, 24, 26]},
+    {theme: "Air pollution", "similar_articles": [7, 34]},
+    {theme: "News Broadcast", "similar_articles": [8]},
+    {theme: "Support for Catherine's cancer announcement", "similar_articles": [9, 28]},
+    {theme: "World Cup bobsleigh", "similar_articles": [10]},
+    {theme: "Chip shortage", "similar_articles": [11]},
+    {theme: "Para-cycling Track World Championships", "similar_articles": [15]},
+    {theme: "Māori and Pacific Island school cultural festival", "similar_articles": [16]},
+    {theme: "Ice dance at worlds", "similar_articles": [17]},
+    {theme: "Kate Middleton cancer diagnosis", "similar_articles": [18, 35]},
+    {theme: "Bitcoin volatility", "similar_articles": [22]},
+    {theme: "Closure of Cinema World", "similar_articles": [23]},
+    {theme: "Martin Scorsese lawsuit settlement", "similar_articles": [27]},
+    {theme: "Movie 'Do Not Expect Too Much From the End of the World'", "similar_articles": [29, 32]},
+    {theme: "Solar eclipse viewing at One World Observatory", "similar_articles": [33]},
+    {theme: "Air pollution in Asia", "similar_articles": [34]},
+    {theme: "North Korea cancels World Cup qualifier", "similar_articles": [38]},
+    {theme: "Telemark skiing at World Cup finals", "similar_articles": [39]}
+]}
+INFO:     127.0.0.1:41942 - "GET /api/getArticles?topic=World HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/uvicorn/protocols/http/h11_impl.py", line 408, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/applications.py", line 292, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
+    raise exc
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
+    raise e
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/starlette/routing.py", line 66, in app
+    response = await func(request)
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/routing.py", line 273, in app
+    raw_response = await run_endpoint_function(
+  File "/home/waldoh/.cache/pypoetry/virtualenvs/smart-news-hTsury8O-py3.10/lib/python3.10/site-packages/fastapi/routing.py", line 190, in run_endpoint_function
+    return await dependant.call(**values)
+  File "/home/waldoh/Dev/python/smart-news/main.py", line 79, in get_articles
+    grouped_articles_json = json.loads(grouped_articles_json)  # Convert JSON string to a dictionary
+  File "/usr/lib/python3.10/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.10/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.10/json/decoder.py", line 353, in raw_decode
+    obj, end = self.scan_once(s, idx)
+json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+INFO:     127.0.0.1:41958 - "GET /service-worker.js HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41958 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:33694 - "GET / HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:33694 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33698 - "GET /service-worker.js HTTP/1.1" 200 OK
+querying gpt
+{
+  "similar_articles": [
+    {
+      "theme": "Venezuela Opposition",
+      "similar_articles": [1, 14]
+    },
+    {
+      "theme": "Venezuelan opposition leader picks proxy to challenge Maduro",
+      "similar_articles": [2]
+    },
+    {
+      "theme": "Venezuela Elections: Maria Corina Machado Names College Professor Corina Yoris as Replacement Presidential Candidate",
+      "similar_articles": [3, 16]
+    },
+    {
+      "theme": "Venezuela's President Nicolas Maduro shakes hands with Guyana's President Irfaan Ali during a meeting this month",
+      "similar_articles": [4]
+    },
+    {
+      "theme": "Venezuela Forms New State in Essequibo, Disputed Territory With Guyana",
+      "similar_articles": [5, 18, 23, 24, 29, 39]
+    },
+    {
+      "theme": "Venezuelan Opposition Leader Steps Aside Before Election Amid Crackdown",
+      "similar_articles": [6]
+    },
+    {
+      "theme": "Two top aides of Venezuelan opposition leader Maria Corina Machado have been arrested in the lead-up to the ...",
+      "similar_articles": [7]
+    },
+    {
+      "theme": "Venezuela's parliament approves creation of state in disputed oil-rich Essequibo",
+      "similar_articles": [8, 25, 26, 27, 28]
+    },
+    {
+      "theme": "In Venezuela the registration process for presidential election candidates continues",
+      "similar_articles": [9, 34]
+    },
+    {
+      "theme": "Venezuela's Top Opposition Leader Steps Aside Ahead of Presidential Elections",
+      "similar_articles": [10]
+    },
+    {
+      "theme": "Venezuela opposition candidate names substitute following campaign ban, arrests",
+      "similar_articles": [11, 21]
+    },
+    {
+      "theme": "Faced with an election ban, Venezuela opposition leader names alternate",
+      "similar_articles": [12]
+    },
+    {
+      "theme": "Venezuela Opposition Agrees on Machado Replacement for July Vote",
+      "similar_articles": [13]
+    },
+    {
+      "theme": "Venezuelan opposition leader names successor after two close aides arrested",
+      "similar_articles": [15]
+    },
+    {
+      "theme": "Venezuelan opposition presidential candidate María Machado names substitute while she fights ban",
+      "similar_articles": [17, 20, 21]
+    },
+    {
+      "theme": "Guyana 'gravely concerned' at moves by Venezuela to claim Essequibo",
+      "similar_articles": [23]
+    },
+    {
+      "theme": "Guyana expresses grave concern over adoption of new law in Venezuela declaring Essequibo as its new state",
+      "similar_articles": [24]
+    },
+    {
+      "theme": "Guyana concerned over new efforts by Venezuela to claim Essequibo",
+      "similar_articles": [29]
+    },
+    {
+      "theme": "CIA Director Visits Guyana Amid Protest From Venezuela",
+      "similar_articles": [30]
+    },
+    {
+      "theme": "Recent actions by Venezuela a 'flagrant violation' of Guyana's sovereignty & territorial integrity – Foreign Ministry says",
+      "similar_articles": [36]
+    },
+    {
+      "theme": "Guyana appeals for international help after Venezuela passes law to incorporate Essequibo",
+      "similar_articles": [37]
+    },
+    {
+      "theme": "Venezuela creates new state in territory under dispute with Guyana",
+      "similar_articles": [39]
+    },
+    {
+      "theme": "Venezuela Says Guyana's Oil-Rich Essequibo is Now Their New State",
+      "similar_articles": [40]
+    }
+  ]
+}
+INFO:     127.0.0.1:33694 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:55606 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55606 - "GET /styles.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55616 - "GET /scripts.js HTTP/1.1" 304 Not Modified
+Returning cached articles
+INFO:     127.0.0.1:55606 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:55606 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55616 - "GET /service-worker.js HTTP/1.1" 200 OK
+querying gpt
+{
+  "similar_articles": [
+    {
+      "theme": "Football",
+      "similar_articles": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        19,
+        27,
+        29
+      ]
+    },
+    {
+      "theme": "Mountaineering",
+      "similar_articles": [
+        5,
+        22,
+        23,
+        24,
+        25,
+        26
+      ]
+    },
+    {
+      "theme": "Economy and Politics",
+      "similar_articles": [
+        11,
+        12,
+        20
+      ]
+    },
+    {
+      "theme": "Natural Disasters",
+      "similar_articles": [
+        13,
+        33,
+        34,
+        36,
+        37
+      ]
+    },
+    {
+      "theme": "Art and Culture",
+      "similar_articles": [
+        14,
+        31
+      ]
+    },
+    {
+      "theme": "Environment and Conservation",
+      "similar_articles": [
+        22,
+        23,
+        24,
+        25,
+        26
+      ]
+    },
+    {
+      "theme": "Oil and Energy",
+      "similar_articles": [
+        32
+      ]
+    },
+    {
+      "theme": "Drug Bust",
+      "similar_articles": [
+        39,
+        40
+      ]
+    }
+  ]
+}
+INFO:     127.0.0.1:55606 - "GET /api/getArticles?topic=bolivia HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:38742 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38742 - "GET /styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:38756 - "GET /scripts.js HTTP/1.1" 304 Not Modified
+Returning cached articles
+INFO:     127.0.0.1:38742 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:38742 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:38742 - "GET /api/getArticles?topic=bolivia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38742 - "GET /service-worker.js HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [102242]
+INFO:     Started server process [113648]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:41856 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41856 - "GET /styles.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:41866 - "GET /scripts.js HTTP/1.1" 304 Not Modified
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=bolivia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41856 - "GET /service-worker.js HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET / HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=bolivia HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41874 - "GET /service-worker.js HTTP/1.1" 200 OK
+querying gpt
+{
+  "similar_articles": [
+    {
+      "theme": "Peru vs Nicaragua",
+      "similar_articles": [
+        1,
+        4,
+        24,
+        33
+      ]
+    },
+    {
+      "theme": "Water crisis in Lima, Peru",
+      "similar_articles": [
+        3,
+        26,
+        27
+      ]
+    },
+    {
+      "theme": "Peru's environmental violations",
+      "similar_articles": [
+        2,
+        10,
+        13,
+        14,
+        19,
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "theme": "Peru's infrastructure and investments",
+      "similar_articles": [
+        6,
+        12,
+        25,
+        31
+      ]
+    },
+    {
+      "theme": "Peru's wildlife and conservation",
+      "similar_articles": [
+        8,
+        35
+      ]
+    },
+    {
+      "theme": "Peru's legal and political issues",
+      "similar_articles": [
+        11,
+        16,
+        17,
+        30,
+        37
+      ]
+    },
+    {
+      "theme": "Peru's mining industry",
+      "similar_articles": [
+        15,
+        36
+      ]
+    },
+    {
+      "theme": "Peru's trade and economy",
+      "similar_articles": [
+        29
+      ]
+    },
+    {
+      "theme": "Peru's cultural heritage",
+      "similar_articles": [
+        28,
+        34
+      ]
+    },
+    {
+      "theme": "Peru's sports",
+      "similar_articles": [
+        5,
+        39,
+        40
+      ]
+    }
+  ]
+}
+INFO:     127.0.0.1:41856 - "GET /api/getArticles?topic=peru HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [113648]
+INFO:     Started server process [128534]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60920 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60928 - "GET /scripts.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:60920 - "GET /styles.css HTTP/1.1" 304 Not Modified
+Returning cached articles
+INFO:     127.0.0.1:60920 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:60920 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:60920 - "GET /api/getArticles?topic=bolivia HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:60920 - "GET /api/getArticles?topic=peru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60920 - "GET /service-worker.js HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:47198 - "GET / HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:47198 - "GET /api/getArticles?topic=Canada HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:47198 - "GET /api/getArticles?topic=Venezuela HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:47198 - "GET /api/getArticles?topic=bolivia HTTP/1.1" 200 OK
+Returning cached articles
+INFO:     127.0.0.1:47198 - "GET /api/getArticles?topic=peru HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47204 - "GET /service-worker.js HTTP/1.1" 200 OK
+Error adapting article: Missing value for image_link
+querying gpt
+{
+  "similar_articles": [
+    {
+      "theme": "UN General Assembly Approves First Resolution On Artificial Intelligence",
+      "similar_articles": [1, 6, 20, 21, 22]
+    },
+    {
+      "theme": "Artificial Intelligence and Healthcare",
+      "similar_articles": [2]
+    },
+    {
+      "theme": "Artificial Intelligence Safety",
+      "similar_articles": [4]
+    },
+    {
+      "theme": "Artificial Intelligence Stocks",
+      "similar_articles": [5, 12]
+    },
+    {
+      "theme": "Artificial Intelligence in Cancer Classification",
+      "similar_articles": [7]
+    },
+    {
+      "theme": "Artificial Intelligence and Employment",
+      "similar_articles": [8]
+    },
+    {
+      "theme": "Artificial Intelligence and Ethics",
+      "similar_articles": [9, 23]
+    },
+    {
+      "theme": "Artificial Intelligence in China",
+      "similar_articles": [10]
+    },
+    {
+      "theme": "Artificial Intelligence Virtual Assistant",
+      "similar_articles": [11]
+    },
+    {
+      "theme": "Artificial Intelligence in Weather Forecasting",
+      "similar_articles": [13]
+    },
+    {
+      "theme": "Artificial Intelligence and Open Source",
+      "similar_articles": [14]
+    },
+    {
+      "theme": "Artificial Intelligence and Economic Impact",
+      "similar_articles": [15]
+    },
+    {
+      "theme": "Artificial Intelligence in Education",
+      "similar_articles": [19]
+    },
+    {
+      "theme": "Artificial Intelligence Legislation",
+      "similar_articles": [24, 27, 31, 40]
+    },
+    {
+      "theme": "Artificial Intelligence in Medical Diagnosis",
+      "similar_articles": [28]
+    },
+    {
+      "theme": "Artificial Intelligence in Logistics",
+      "similar_articles": [29]
+    },
+    {
+      "theme": "Artificial Intelligence Degree Program",
+      "similar_articles": [30]
+    },
+    {
+      "theme": "Artificial Intelligence and Intellectual Property",
+      "similar_articles": [33]
+    },
+    {
+      "theme": "Artificial Intelligence and World War II",
+      "similar_articles": [34]
+    },
+    {
+      "theme": "Artificial Intelligence Advisory Committee",
+      "similar_articles": [36]
+    },
+    {
+      "theme": "Artificial Intelligence Accelerator",
+      "similar_articles": [37]
+    },
+    {
+      "theme": "Artificial Intelligence in Antibiotic Design",
+      "similar_articles": [38, 39]
+    }
+  ]
+}
+INFO:     127.0.0.1:47198 - "GET /api/getArticles?topic=artificial%20intelligence HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [128534]

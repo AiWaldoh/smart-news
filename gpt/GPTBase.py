@@ -1,13 +1,18 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
+import os
 
 
 class GPTBase:
     def __init__(self, system_prompt, model_name="gpt-3.5-turbo-16k", temperature=0):
         self.default_model_name = model_name
         self.default_temperature = temperature
+
         self.chat = ChatOpenAI(
-            model_name=self.default_model_name, temperature=self.default_temperature
+            openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+            model_name=self.default_model_name,
+            temperature=self.default_temperature,
+            openai_api_base="https://openrouter.ai/api/v1",
         )
         self.system_message = SystemMessage(content=system_prompt)
 
@@ -19,7 +24,10 @@ class GPTBase:
                 temperature if temperature is not None else self.default_temperature
             )
             temporary_chat = ChatOpenAI(
-                model_name=temporary_model_name, temperature=temporary_temperature
+                openai_api_key=os.getenv("OPENROUTER_API_KEY"),
+                openai_api_base="https://openrouter.ai/api/v1",
+                model_name=temporary_model_name,
+                temperature=temporary_temperature,
             )
         else:
             temporary_chat = self.chat
